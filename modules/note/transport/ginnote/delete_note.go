@@ -2,33 +2,31 @@ package ginnote
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
-	"food-delivery/common"
 	appctx "food-delivery/components/appcontext"
 	notebiz "food-delivery/modules/note/biz"
-	notemodel "food-delivery/modules/note/model"
 	notestorage "food-delivery/modules/note/storage"
 )
 
-func CreateNote(appCtx appctx.AppContext) gin.HandlerFunc {
+func DeleteNote(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var note notemodel.Notes
-
-		if err := c.ShouldBind(&note); err != nil {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
 		store := notestorage.NewSQLStore(appCtx.GetMainDBConnection())
-		biz := notebiz.NewCreateNoteBiz(store)
+		biz := notebiz.NewDeleteNoteBiz(store)
 
-		if err := biz.CreateNote(c.Request.Context(), &note); err != nil {
+		if err := biz.DeleteNote(c.Request.Context(), id); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(true))
+		c.JSON(http.StatusOK, gin.H{"data": "success"})
 	}
 }
