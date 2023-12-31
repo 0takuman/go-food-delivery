@@ -29,7 +29,7 @@ func (biz *deleteNoteBiz) DeleteNote(context context.Context, id int) error {
 		return err
 	}
 
-	if !oldData.Status {
+	if oldData.Status != 1 {
 		return errors.New("note is deleted")
 	}
 

@@ -36,6 +36,8 @@ func main() {
 
 	v1.POST("/notes", ginnote.CreateNote(appCtx))
 
+	v1.GET("/notes", ginnote.ListNote(appCtx))
+
 	// v1.GET("/notes/:id", func(c *gin.Context) {
 	// 	id, err := strconv.Atoi(c.Param("id"))
 	// 	if err != nil {
