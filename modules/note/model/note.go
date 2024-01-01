@@ -11,10 +11,13 @@ func (Notes) TableName() string {
 	return "notes"
 }
 
+func (n *Notes) Mask(isAdminOrOwner bool) {
+	n.GenUID(common.DbTypeNote)
+}
+
 type NotesUpdate struct {
-	Id     int     `json:"id" gorm:"column:id"`
-	Title  *string `json:"title" gorm:"column:title"`
-	Status bool    `json:"status" gorm:"column:status"`
+	common.SQLModel `json:",inline"`
+	Title           *string `json:"title" gorm:"column:title"`
 }
 
 func (NotesUpdate) TableName() string {

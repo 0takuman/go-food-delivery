@@ -43,6 +43,10 @@ func ListNote(appCtx appctx.AppContext) gin.HandlerFunc {
 			return
 		}
 
+		for i := range results {
+			results[i].Mask(false)
+		}
+
 		c.JSON(http.StatusOK, common.NewSuccessResponse(results, pagingData, filter))
 
 	}

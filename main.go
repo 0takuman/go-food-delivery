@@ -11,6 +11,7 @@ import (
 	"gorm.io/gorm"
 
 	appctx "food-delivery/components/appcontext"
+	"food-delivery/middleware"
 	ginnote "food-delivery/modules/note/transport/ginnote"
 )
 
@@ -26,6 +27,9 @@ func main() {
 	appCtx := appctx.NewAppContext(db)
 
 	r := gin.Default()
+
+	r.Use(middleware.Recover(appCtx))
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
