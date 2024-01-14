@@ -1,6 +1,10 @@
 package common
 
-import "net/http"
+import (
+	"errors"
+	"fmt"
+	"net/http"
+)
 
 type AppError struct {
 	StatusCode int    `json:"status_code"`
@@ -30,6 +34,22 @@ func NewFullErrorResponse(statusCode int, root error, msg, log, key string) *App
 	}
 }
 
+func NewUnauthorized(root error, msg, key string) *AppError {
+	return &AppError{
+		StatusCode: http.StatusUnauthorized,
+		RootErr:    root,
+		Message:    msg,
+		Key:        key,
+	}
+}
+
+func NewCustomError(root error, msg, key string) *AppError {
+	if root != nil {
+		return NewErrorResponse(root, msg, root.Error(), key)
+	}
+	return NewErrorResponse(errors.New(msg), msg, msg, key)
+}
+
 func UnauthorizedErrorResponse(root error, msg, log, key string) *AppError {
 	return &AppError{
 		StatusCode: http.StatusUnauthorized,
@@ -51,6 +71,86 @@ func (e *AppError) Error() string {
 	return e.RootError().Error()
 }
 
+func ErrInvalidRequest(err error) *AppError {
+	return NewErrorResponse(err, "Invalid Request", err.Error(), "ErrInvalidRequest")
+}
+
+func ErrDB(err error) *AppError {
+	return NewFullErrorResponse(http.StatusInternalServerError, err, "DB Error", err.Error(), "ErrDB")
+}
+
 func ErrInternal(err error) *AppError {
 	return NewErrorResponse(err, "internal error", err.Error(), "ErrInternal")
+}
+
+func ErrCannotListEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot list %s", string.ToLower(entity)),
+		fmt.Sprintf("ErrCannotList%s", entity),
+	)
+}
+
+func ErrCannotDeleteEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot delete %s", string.ToLower(entity)),
+		fmt.Sprintf("ErrCannotDelete%s", entity),
+	)
+}
+
+func ErrCannotUpdateEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot update %s", string.ToLower(entity)),
+		fmt.Sprintf("ErrCannotUpdate%s", entity),
+	)
+}
+
+func ErrCannotGetEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot get %s", string.ToLower(entity)),
+		fmt.Sprintf("ErrCannotGet%s", entity),
+	)
+}
+
+func ErrEntityDeleted(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("%s is deleted", string.ToLower(entity)),
+		fmt.Sprintf("Err%sDeleted", entity),
+	)
+}
+
+func ErrEntityExisted(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("%s is existed", string.ToLower(entity)),
+		fmt.Sprintf("Err%sExisted", entity),
+	)
+}
+
+func ErrEntityNotFound(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("%s not found", string.ToLower(entity)),
+		fmt.Sprintf("Err%sNotFound", entity),
+	)
+}
+
+func ErrCannotCreateEntity(entity string, err error) *AppError {
+	return NewCustomError(
+		err,
+		fmt.Sprintf("Cannot create %s", string.ToLower(entity)),
+		fmt.Sprintf("ErrCannotCreate%s", entity),
+	)
+}
+
+func ErrNoPermission(err error) *AppError {
+	return NewCustomError(
+		err,
+		"You don't have permission",
+		"ErrNoPermission",
+	)
 }
