@@ -1,5 +1,5 @@
 package restaurantmodel
 
 type Filter struct {
-	Status bool `json:"status" form:"status"`
+	OwnerID int `json:"owner_id" form:"owner_id"`
 }

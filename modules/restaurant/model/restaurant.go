@@ -6,7 +6,7 @@ type Restaurant struct {
 	common.SQLModel  `json:",inline"`
 	OwnerId          int     `json:"owner_id" gorm:"column:owner_id;"`
 	Name             string  `json:"name" gorm:"column:name;"`
-	Address          string  `json:"address" gorm:"column:address;"`
+	Address          string  `json:"address" gorm:"column:addr;"`
 	CityId           int     `json:"city_id" gorm:"column:city_id;"`
 	Lat              float64 `json:"lat" gorm:"column:lat;"`
 	Lng              float64 `json:"lng" gorm:"column:lng;"`
@@ -27,6 +27,7 @@ type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
 	OwnerId         int    `json:"owner_id" gorm:"column:owner_id;"`
 	Name            string `json:"name" gorm:"column:name;"`
+	Address         string `json:"address" gorm:"column:addr;"`
 }
 
 func (RestaurantCreate) TableName() string {

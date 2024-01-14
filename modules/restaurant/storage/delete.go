@@ -1,6 +1,9 @@
 package restaurantstorage
 
-import "context"
+import (
+	"context"
+	restaurantmodel "food-delivery/modules/restaurant/model"
+)
 
 func (s *store) DeleteRestaurant(context context.Context,
 	id int,

@@ -12,7 +12,7 @@ import (
 
 	appctx "food-delivery/components/appcontext"
 	"food-delivery/middleware"
-	ginnote "food-delivery/modules/note/transport/ginnote"
+	"food-delivery/modules/restaurant/transport/ginrestaurant"
 )
 
 func main() {
@@ -38,9 +38,11 @@ func main() {
 
 	v1 := r.Group("/api/v1")
 
-	v1.POST("/notes", ginnote.CreateNote(appCtx))
+	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
 
-	v1.GET("/notes", ginnote.ListNote(appCtx))
+	// v1.POST("/notes", ginnote.CreateNote(appCtx))
+
+	// v1.GET("/notes", ginnote.ListNote(appCtx))
 
 	// v1.GET("/notes/:id", func(c *gin.Context) {
 	// 	id, err := strconv.Atoi(c.Param("id"))
@@ -112,7 +114,7 @@ func main() {
 	// 	c.JSON(http.StatusOK, gin.H{"data": note})
 	// })
 
-	v1.DELETE("/notes/:id", ginnote.DeleteNote(appCtx))
+	// v1.DELETE("/notes/:id", ginnote.DeleteNote(appCtx))
 
 	r.Run()
 

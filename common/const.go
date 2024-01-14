@@ -3,8 +3,9 @@ package common
 import "log"
 
 const (
-	DbTypeNote = 1
-	DbTypeUser = 2
+	DbTypeNote       = 1
+	DbTypeUser       = 2
+	DbTypeRestaurant = 3
 )
 
 func AppRecover() {

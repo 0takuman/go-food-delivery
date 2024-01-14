@@ -1,6 +1,9 @@
-package notestorage
+package restaurantstorage
 
-import "context"
+import (
+	"context"
+	restaurantmodel "food-delivery/modules/restaurant/model"
+)
 
 func (s *store) FindDataWithCondition(context context.Context,
 	condition map[string]interface{},

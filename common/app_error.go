@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type AppError struct {
@@ -86,7 +87,7 @@ func ErrInternal(err error) *AppError {
 func ErrCannotListEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot list %s", string.ToLower(entity)),
+		fmt.Sprintf("Cannot list %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotList%s", entity),
 	)
 }
@@ -94,7 +95,7 @@ func ErrCannotListEntity(entity string, err error) *AppError {
 func ErrCannotDeleteEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot delete %s", string.ToLower(entity)),
+		fmt.Sprintf("Cannot delete %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotDelete%s", entity),
 	)
 }
@@ -102,7 +103,7 @@ func ErrCannotDeleteEntity(entity string, err error) *AppError {
 func ErrCannotUpdateEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot update %s", string.ToLower(entity)),
+		fmt.Sprintf("Cannot update %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotUpdate%s", entity),
 	)
 }
@@ -110,7 +111,7 @@ func ErrCannotUpdateEntity(entity string, err error) *AppError {
 func ErrCannotGetEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot get %s", string.ToLower(entity)),
+		fmt.Sprintf("Cannot get %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotGet%s", entity),
 	)
 }
@@ -118,7 +119,7 @@ func ErrCannotGetEntity(entity string, err error) *AppError {
 func ErrEntityDeleted(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("%s is deleted", string.ToLower(entity)),
+		fmt.Sprintf("%s is deleted", strings.ToLower(entity)),
 		fmt.Sprintf("Err%sDeleted", entity),
 	)
 }
@@ -126,7 +127,7 @@ func ErrEntityDeleted(entity string, err error) *AppError {
 func ErrEntityExisted(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("%s is existed", string.ToLower(entity)),
+		fmt.Sprintf("%s is existed", strings.ToLower(entity)),
 		fmt.Sprintf("Err%sExisted", entity),
 	)
 }
@@ -134,7 +135,7 @@ func ErrEntityExisted(entity string, err error) *AppError {
 func ErrEntityNotFound(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("%s not found", string.ToLower(entity)),
+		fmt.Sprintf("%s not found", strings.ToLower(entity)),
 		fmt.Sprintf("Err%sNotFound", entity),
 	)
 }
@@ -142,7 +143,7 @@ func ErrEntityNotFound(entity string, err error) *AppError {
 func ErrCannotCreateEntity(entity string, err error) *AppError {
 	return NewCustomError(
 		err,
-		fmt.Sprintf("Cannot create %s", string.ToLower(entity)),
+		fmt.Sprintf("Cannot create %s", strings.ToLower(entity)),
 		fmt.Sprintf("ErrCannotCreate%s", entity),
 	)
 }
