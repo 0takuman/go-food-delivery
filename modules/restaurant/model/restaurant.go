@@ -2,6 +2,8 @@ package restaurantmodel
 
 import "food-delivery/common"
 
+const EntityName = "Restaurant"
+
 type Restaurant struct {
 	common.SQLModel  `json:",inline"`
 	OwnerId          int     `json:"owner_id" gorm:"column:owner_id;"`
