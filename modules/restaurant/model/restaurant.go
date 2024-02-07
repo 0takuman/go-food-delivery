@@ -36,6 +36,10 @@ func (RestaurantCreate) TableName() string {
 	return Restaurant{}.TableName()
 }
 
+func (r *RestaurantCreate) Mask(isAdminOrOwner bool) {
+	r.GenUID(common.DbTypeRestaurant)
+}
+
 type RestaurantUpdate struct {
 	common.SQLModel `json:",inline"`
 	OwnerId         int    `json:"owner_id" gorm:"column:owner_id;"`

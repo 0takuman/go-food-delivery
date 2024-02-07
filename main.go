@@ -39,6 +39,7 @@ func main() {
 	v1 := r.Group("/api/v1")
 
 	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
+	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 
@@ -116,6 +117,6 @@ func main() {
 
 	// v1.DELETE("/notes/:id", ginnote.DeleteNote(appCtx))
 
-	r.Run()
+	r.Run(":9898")
 
 }

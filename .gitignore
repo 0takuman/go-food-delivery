@@ -24,3 +24,9 @@ go.work
 
 # Debug file
 __debug*
+
+# SQL file
+*.sql
+
+# Docker compose
+docker-compose.yaml
