@@ -13,6 +13,7 @@ import (
 	appctx "food-delivery/components/appcontext"
 	"food-delivery/middleware"
 	"food-delivery/modules/restaurant/transport/ginrestaurant"
+	"food-delivery/modules/upload/transport/ginupload"
 )
 
 func main() {
@@ -24,11 +25,17 @@ func main() {
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	appCtx := appctx.NewAppContext(db)
 
 	r := gin.Default()
 
 	r.Use(middleware.Recover(appCtx))
+
+	r.Static("/static", "./static")
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -37,7 +44,7 @@ func main() {
 	})
 
 	v1 := r.Group("/api/v1")
-
+	v1.POST("/upload", ginupload.UploadImage(appCtx))
 	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
 	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
 
