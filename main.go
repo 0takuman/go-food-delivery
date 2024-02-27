@@ -1,6 +1,10 @@
 package main
 
 import (
+	"food-delivery/middleware"
+	"food-delivery/modules/restaurant/transport/ginrestaurant"
+	"food-delivery/modules/upload/transport/ginupload"
+	"food-delivery/modules/user/transport/ginuser"
 	"log"
 	"net/http"
 	"os"
@@ -11,9 +15,6 @@ import (
 	"gorm.io/gorm"
 
 	appctx "food-delivery/components/appcontext"
-	"food-delivery/middleware"
-	"food-delivery/modules/restaurant/transport/ginrestaurant"
-	"food-delivery/modules/upload/transport/ginupload"
 )
 
 func main() {
@@ -24,7 +25,6 @@ func main() {
 	dsn := os.Getenv("DB_CONNECTION")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,6 +47,7 @@ func main() {
 	v1.POST("/upload", ginupload.UploadImage(appCtx))
 	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
 	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
+	v1.POST("/register", ginuser.Register(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 
@@ -125,5 +126,4 @@ func main() {
 	// v1.DELETE("/notes/:id", ginnote.DeleteNote(appCtx))
 
 	r.Run(":9898")
-
 }

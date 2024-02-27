@@ -5,17 +5,14 @@ import (
 	"encoding/hex"
 )
 
-type md5Hasher struct{}
+type md5Hash struct{}
 
-func NewMd5Hasher() *md5Hasher {
-	return &md5Hasher{}
+func NewMd5Hash() *md5Hash {
+	return &md5Hash{}
 }
 
-func (md5Hasher) Hash(data string) (string, error) {
+func (h *md5Hash) Hash(data string) string {
 	hasher := md5.New()
-	_, err := hasher.Write([]byte(data))
-	if err != nil {
-		return "", err
-	}
-	return hex.EncodeToString(hasher.Sum(nil)), nil
+	hasher.Write([]byte(data))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
