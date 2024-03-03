@@ -30,7 +30,9 @@ type UserCreate struct {
 	Email           string `json:"email" gorm:"column:email;"`
 	Password        string `json:"-" gorm:"column:password;"`
 	Salt            string `json:"-" gorm:"column:salt;"`
-	Role            string `json:"role" gorm:"column:role;"`
+	FirstName       string `json:"first_name" gorm:"collumn:first_name;"`
+	LastName        string `json:"last_name" gorm:"collumn:last_name;"`
+	Role            string `json:"-" gorm:"column:role;"`
 }
 
 func (UserCreate) TableName() string {
