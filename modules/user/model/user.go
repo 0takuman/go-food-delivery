@@ -78,4 +78,10 @@ var (
 		"Email has already existed",
 		"ErrEmailExisted",
 	)
+
+	ErrTokenCouldNotBeGenerated = common.NewCustomError(
+		errors.New("token could not be generated"),
+		"Token could not be generated",
+		"TokenCouldNotBeGenerated",
+	)
 )

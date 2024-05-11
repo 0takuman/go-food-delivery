@@ -20,8 +20,6 @@
 # Go workspace file
 go.work
 
-.env
-
 # Debug file
 __debug*
 
@@ -30,3 +28,6 @@ __debug*
 
 # Docker compose
 docker-compose.yaml
+
+# Env file
+.env

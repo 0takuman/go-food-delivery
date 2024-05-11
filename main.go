@@ -23,13 +23,14 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 	dsn := os.Getenv("DB_CONNECTION")
+	secretKey := os.Getenv("SECRET_KEY")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	appCtx := appctx.NewAppContext(db)
+	appCtx := appctx.NewAppContext(db, secretKey)
 
 	r := gin.Default()
 
@@ -48,6 +49,7 @@ func main() {
 	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
 	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
 	v1.POST("/register", ginuser.Register(appCtx))
+	v1.POST("/login", ginuser.Login(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 
