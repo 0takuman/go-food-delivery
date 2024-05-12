@@ -28,7 +28,7 @@ func (User) TableName() string {
 type UserCreate struct {
 	common.SQLModel `json:",inline"`
 	Email           string `json:"email" gorm:"column:email;"`
-	Password        string `json:"-" gorm:"column:password;"`
+	Password        string `json:"password" gorm:"column:password;"`
 	Salt            string `json:"-" gorm:"column:salt;"`
 	FirstName       string `json:"first_name" gorm:"collumn:first_name;"`
 	LastName        string `json:"last_name" gorm:"collumn:last_name;"`
