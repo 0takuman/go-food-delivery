@@ -15,7 +15,7 @@ func (m *SQLModel) GenUID(dbType int) {
 	m.FakeId = &uid
 }
 
-// func (sqlModel *SQLModel) Mask(isAdminOrOwner bool) {
-// 	uid := NewUID(uint32(sqlModel.Id), DbTypeRestaurant, 1)
-// 	sqlModel.FakeId = &uid
-// }
+func (sqlModel *SQLModel) Mask(isAdminOrOwner bool) {
+	uid := NewUID(uint32(sqlModel.Id), DbTypeRestaurant, 1)
+	sqlModel.FakeId = &uid
+}

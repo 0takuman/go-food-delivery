@@ -39,7 +39,7 @@ func (j *jwtProvider) Generate(data tokenprovider.TokenPayload, expiry int) (*to
 	return &tokenprovider.Token{
 		Token:   myToken,
 		Expiry:  expiry,
-		Created: time.Now(),
+		CreatedAt: time.Now(),
 	}, nil
 }
 
