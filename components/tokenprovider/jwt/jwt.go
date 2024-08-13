@@ -37,15 +37,30 @@ func (j *jwtProvider) Generate(data tokenprovider.TokenPayload, expiry int) (*to
 
 	// return token
 	return &tokenprovider.Token{
-		Token:   myToken,
-		Expiry:  expiry,
+		Token:     myToken,
+		Expiry:    expiry,
 		CreatedAt: time.Now(),
 	}, nil
 }
 
 func (j *jwtProvider) Validate(token string) (*tokenprovider.TokenPayload, error) {
-	return &tokenprovider.TokenPayload{
-		0,
-		"",
-	}, nil
+	res, err := jwt.ParseWithClaims(token, &myClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(j.secret), nil
+	})
+
+	if err != nil {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	if !res.Valid {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	claims, ok := res.Claims.(*myClaims)
+
+	if !ok {
+		return nil, tokenprovider.ErrInvalidToken
+	}
+
+	return &claims.Payload, nil
 }

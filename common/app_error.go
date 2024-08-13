@@ -156,7 +156,12 @@ func ErrNoPermission(err error) *AppError {
 	)
 }
 
-
-
+func ErrWrongAuthHeader(err error) *AppError {
+	return NewCustomError(
+		err,
+		"Wrong Authentication Header",
+		"ErrWrongAuthHeader",
+	)
+}
 
 var ErrRecordNotFound = errors.New("record not found")

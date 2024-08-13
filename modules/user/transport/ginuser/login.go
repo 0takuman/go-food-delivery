@@ -31,7 +31,7 @@ func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 		account, err := business.Login(c.Request.Context(), &loginUser)
 
 		if err != nil {
-			panic(common.ErrCannotGetEntity(account.Created.GoString(), err))
+			panic(common.ErrCannotGetEntity(account.Token, err))
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(account))

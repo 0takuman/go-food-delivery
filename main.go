@@ -50,6 +50,7 @@ func main() {
 	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
 	v1.POST("/register", ginuser.Register(appCtx))
 	v1.POST("/login", ginuser.Login(appCtx))
+	v1.GET("/profile", middleware.RequireAuth(appCtx), ginuser.Profile(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 

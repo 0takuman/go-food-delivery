@@ -23,10 +23,14 @@ func ErrWrongAuthHeader(err error) *common.AppError {
 func extractTokenFromHeader(s string) (string, error) {
 	parts := strings.Split(s, " ")
 
+	if parts[0] != "Bearer" || len(parts) < 2 || strings.TrimSpace(parts[1]) == "" {
+		return "", ErrWrongAuthHeader(nil)
+	}
+
 	return parts[1], nil
 }
 
-func Requireauth(appctx appctx.AppContext) func(c *gin.Context) {
+func RequireAuth(appctx appctx.AppContext) func(c *gin.Context) {
 	tokenprovider := jwt.NewTokenJWTProvider(appctx.SecretKey())
 
 	return func(c *gin.Context) {
