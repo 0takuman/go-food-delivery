@@ -16,9 +16,13 @@ func CreateRestaurant(appcontext appCtx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var restaurant restaurantmodel.RestaurantCreate
 
+		requester := c.MustGet(common.CurrentUser).(common.Requester)
+
 		if err := c.ShouldBind(&restaurant); err != nil {
 			panic(err)
 		}
+
+		restaurant.UserId = requester.GetUserId()
 
 		store := restaurantstorage.NewSQLStore(appcontext.GetMainDBConnection())
 		biz := restaurantbiz.NewCreateRestaurantBiz(store)

@@ -46,11 +46,12 @@ func main() {
 
 	v1 := r.Group("/api/v1")
 	v1.POST("/upload", ginupload.UploadImage(appCtx))
-	v1.POST("/restaurants", ginrestaurant.CreateRestaurant(appCtx))
-	v1.GET("/restaurants", ginrestaurant.ListRestaurant(appCtx))
 	v1.POST("/register", ginuser.Register(appCtx))
 	v1.POST("/login", ginuser.Login(appCtx))
 	v1.GET("/profile", middleware.RequireAuth(appCtx), ginuser.Profile(appCtx))
+	restaurant := v1.Group("/restaurants", middleware.RequireAuth(appCtx))
+	restaurant.POST("", ginrestaurant.CreateRestaurant(appCtx))
+	restaurant.GET("/:id", ginrestaurant.ListRestaurant(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 

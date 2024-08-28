@@ -62,6 +62,18 @@ type UserLogin struct {
 	Password string `json:"password" form:"password" gorm:"column:password;"`
 }
 
+func (u *User) GetUserId() int {
+	return u.Id
+}
+
+func (u *User) GetEmail() string {
+	return u.Email
+}
+
+func (u *User) GetRole() string {
+	return u.Role
+}
+
 func (UserLogin) TableName() string {
 	return User{}.TableName()
 }
