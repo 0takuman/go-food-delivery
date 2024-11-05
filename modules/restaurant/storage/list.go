@@ -16,10 +16,15 @@ func (s *store) ListDataWithCondition(
 	var results []restaurantmodel.Restaurant
 	db := s.db.Table(restaurantmodel.Restaurant{}.TableName())
 
+	
+
 	if err := db.Count(&paging.Total).Error; err != nil {
 		return nil, err
 	}
 
+	for i := range moreKeys {
+		db = db.Preload(moreKeys[i])
+	}
 	// Fake Cursor
 
 	if v := paging.FakeCursor; v != "" {

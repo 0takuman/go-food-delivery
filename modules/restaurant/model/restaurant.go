@@ -1,6 +1,9 @@
 package restaurantmodel
 
-import "food-delivery/common"
+import (
+	"food-delivery/common"
+	usermodel "food-delivery/modules/user/model"
+)
 
 const EntityName = "Restaurant"
 
@@ -15,6 +18,8 @@ type Restaurant struct {
 	Cover            *common.Images `json:"cover" gorm:"column:cover;"`
 	Logo             *common.Image  `json:"logo" gorm:"column:logo;"`
 	ShippingFeePerKm int            `json:"shipping_fee_per_km" gorm:"column:shipping_fee_per_km;"`
+	User             *usermodel.User `json:"user" gorm:"preload:false"`
+	UserId          int            `json:"-" gorm:"column:user_id;"`
 }
 
 func (Restaurant) TableName() string {
@@ -23,6 +28,10 @@ func (Restaurant) TableName() string {
 
 func (r *Restaurant) Mask(isAdminOrOwner bool) {
 	r.GenUID(common.DbTypeRestaurant)
+
+	if u := r.User; u != nil {
+		u.Mask(isAdminOrOwner)
+	}
 }
 
 type RestaurantCreate struct {
@@ -34,6 +43,7 @@ type RestaurantCreate struct {
 	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
 	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
 }
+	
 
 func (RestaurantCreate) TableName() string {
 	return Restaurant{}.TableName()

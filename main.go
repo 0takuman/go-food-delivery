@@ -51,7 +51,8 @@ func main() {
 	v1.GET("/profile", middleware.RequireAuth(appCtx), ginuser.Profile(appCtx))
 	restaurant := v1.Group("/restaurants", middleware.RequireAuth(appCtx))
 	restaurant.POST("", ginrestaurant.CreateRestaurant(appCtx))
-	restaurant.GET("/:id", ginrestaurant.ListRestaurant(appCtx))
+	// restaurant.GET("/:id", ginrestaurant.ListRestaurant(appCtx))
+	restaurant.GET("", ginrestaurant.ListRestaurant(appCtx))
 
 	// v1.POST("/notes", ginnote.CreateNote(appCtx))
 

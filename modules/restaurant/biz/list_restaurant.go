@@ -19,7 +19,7 @@ func NewListRestaurantBiz(store ListRestaurantStore) *listRestaurantBiz {
 }
 
 func (biz *listRestaurantBiz) ListRestaurant(context context.Context, filter *restaurantmodel.Filter, paging *common.Paging) ([]restaurantmodel.Restaurant, error) {
-	data, err := biz.store.ListDataWithCondition(context, filter, paging)
+	data, err := biz.store.ListDataWithCondition(context, filter, paging, "User")
 
 	if err != nil {
 		return nil, err

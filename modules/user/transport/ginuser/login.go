@@ -1,6 +1,7 @@
 package ginuser
 
 import (
+	"errors"
 	"food-delivery/common"
 	appctx "food-delivery/components/appcontext"
 	"food-delivery/components/hasher"
@@ -17,24 +18,43 @@ func Login(appCtx appctx.AppContext) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var loginUser usermodel.UserLogin
 		if err := c.ShouldBind(&loginUser); err != nil {
-			panic(common.ErrInvalidRequest(err))
+			c.JSON(http.StatusBadRequest, common.ErrInvalidRequest(err))
+			return
 		}
 
-		db := appCtx.GetMainDBConnection()
+		store := userstorage.NewSQLStore(appCtx.GetMainDBConnection())
 		tokenProvider := jwt.NewTokenJWTProvider(appCtx.SecretKey())
-
-		store := userstorage.NewSQLStore(db)
 		md5 := hasher.NewMd5Hash()
 
-		business := userbiz.NewLoginBusiness(store, tokenProvider, md5, 60*60*24*30)
+		business := userbiz.NewLoginBusiness(store, tokenProvider, md5, 30*24*60*60) // 30 days in seconds
 
 		account, err := business.Login(c.Request.Context(), &loginUser)
-
 		if err != nil {
-			panic(common.ErrCannotGetEntity(account.Token, err))
+			c.JSON(http.StatusUnauthorized, common.ErrCannotGetEntity("account", err))
+			return
 		}
 
 		c.JSON(http.StatusOK, common.SimpleSuccessResponse(account))
+	}
+}
 
+
+func Logout(appCtx appctx.AppContext) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authorizationHeader := c.GetHeader("Authorization")
+		if len(authorizationHeader) > 7 && authorizationHeader[0:7] == "Bearer " {
+			token := authorizationHeader[7:]
+			tokenProvider := jwt.NewTokenJWTProvider(appCtx.SecretKey())
+			if _, err := tokenProvider.Validate(token); err != nil {
+				c.JSON(http.StatusUnauthorized, common.ErrInvalidRequest(err))
+				return
+			}
+
+			c.JSON(http.StatusOK, common.SimpleSuccessResponse(map[string]string{
+				"message": "logged out successfully",
+			}))
+		} else {
+			c.JSON(http.StatusUnauthorized, common.ErrInvalidRequest(errors.New("missing or invalid JWT token")))
+		}
 	}
 }
