@@ -2,24 +2,23 @@ package restaurantmodel
 
 import (
 	"food-delivery/common"
-	usermodel "food-delivery/modules/user/model"
 )
 
 const EntityName = "Restaurant"
 
 type Restaurant struct {
 	common.SQLModel  `json:",inline"`
-	OwnerId          int            `json:"owner_id" gorm:"column:owner_id;"`
-	Name             string         `json:"name" gorm:"column:name;"`
-	Address          string         `json:"address" gorm:"column:addr;"`
-	CityId           int            `json:"city_id" gorm:"column:city_id;"`
-	Lat              float64        `json:"lat" gorm:"column:lat;"`
-	Lng              float64        `json:"lng" gorm:"column:lng;"`
-	Cover            *common.Images `json:"cover" gorm:"column:cover;"`
-	Logo             *common.Image  `json:"logo" gorm:"column:logo;"`
-	ShippingFeePerKm int            `json:"shipping_fee_per_km" gorm:"column:shipping_fee_per_km;"`
-	User             *usermodel.User `json:"user" gorm:"preload:false"`
-	UserId          int            `json:"-" gorm:"column:user_id;"`
+	OwnerId          int                `json:"owner_id" gorm:"column:owner_id;"`
+	Name             string             `json:"name" gorm:"column:name;"`
+	Address          string             `json:"address" gorm:"column:addr;"`
+	CityId           int                `json:"city_id" gorm:"column:city_id;"`
+	Lat              float64            `json:"lat" gorm:"column:lat;"`
+	Lng              float64            `json:"lng" gorm:"column:lng;"`
+	Cover            *common.Images     `json:"cover" gorm:"column:cover;"`
+	Logo             *common.Image      `json:"logo" gorm:"column:logo;"`
+	ShippingFeePerKm int                `json:"shipping_fee_per_km" gorm:"column:shipping_fee_per_km;"`
+	User             *common.SimpleUser `json:"user" gorm:"preload:false"`
+	UserId           int                `json:"-" gorm:"column:user_id;"`
 }
 
 func (Restaurant) TableName() string {
@@ -43,7 +42,6 @@ type RestaurantCreate struct {
 	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
 	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
 }
-	
 
 func (RestaurantCreate) TableName() string {
 	return Restaurant{}.TableName()

@@ -8,3 +8,10 @@ type SimpleUser struct {
 	Avatar    string `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
+func (SimpleUser) TableName() string {
+	return "users"
+}
+
+func (u *SimpleUser) Mask(isAdmin bool) {
+	u.GenUID(DbTypeUser)
+}
